@@ -1,17 +1,36 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HelloWorld msg="Mensagem de Hello World"/>
+    
+    <button class="btn btn-primary" @click="loadJokes()">Atualizar</button>
+
+    <div v-for="joke in jokes" :key="joke.id">
+      <h3>{{ joke.id }}</h3>
+      <p>{{ joke.joke }}</p>
+    </div>
+
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import jokesService from './services/jokesService.js'
 
 export default {
   name: 'App',
   components: {
     HelloWorld
+  },
+  data() {
+    return { jokes: null }
+  },
+  mounted() {
+    this.loadJokes()
+  },
+  methods: {
+    async loadJokes() {
+      this.jokes = await jokesService.getJokes()
+    }
   }
 }
 </script>
